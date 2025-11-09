@@ -13,13 +13,26 @@ const server = http.createServer(app);
 // ✅ Initialize Socket.IO for real-time communication
 const io = new Server(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    origin: [
+      process.env.FRONTEND_URL, // ✅ your live frontend (Netlify)
+      "http://localhost:5173",  // ✅ for local development
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   },
 });
 
 // ✅ Middleware
-app.use(cors({ origin: process.env.FRONTEND_URL || "*" }));
+app.use(
+  cors({
+    origin: [
+      process.env.FRONTEND_URL,
+      "http://localhost:5173", // for local dev
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // ✅ MongoDB Connection
@@ -80,7 +93,6 @@ const authRoutes = require("./routes/authRoutes");
 const leaveRoutes = require("./routes/leaveRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 
-
 // ✅ Pass io and connectedDoctors to admin routes for real-time updates
 const adminRoutes = require("./routes/adminRoutes")(io, connectedDoctors);
 
@@ -120,4 +132,3 @@ app.set("io", io);
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-
