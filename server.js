@@ -107,11 +107,11 @@ app.get("/api", (req, res) => res.send("🏥 Rehab backend running successfully!
 // ✅ Serve Frontend React Build in Production
 const __dirnamePath = path.resolve();
 if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirnamePath, "../frontend/build")));
+  // app.use(express.static(path.join(__dirnamePath, "../frontend/build")));
 
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirnamePath, "../frontend/build", "index.html"));
-  });
+  // app.get("*", (req, res) => {
+  //   res.sendFile(path.resolve(__dirnamePath, "../frontend/build", "index.html"));
+  // });
 }
 
 // ✅ Attach io to app (for access in other routes)
